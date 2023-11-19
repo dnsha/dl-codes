@@ -41,7 +41,7 @@ if __name__ == "__main__":
              "Today is a great day",
              "you are awesome"]
 
-    corpus = " ".join(sents)
+    corpus = " ".join(sents).split()
     vocab = list(set(corpus))
     word_dict = {w:i for i,w in enumerate(vocab)}
     training_data = []
@@ -61,7 +61,14 @@ if __name__ == "__main__":
             optimizer.zero_grad()
             output = skip_gram_model(train_batch)
             loss = criterion(output,train_lebel )
-            if (epoch + 1) % 10 == 0:
-                print('Epoch:', '%04d' % (epoch + 1), 'cost =', '{:.6f}'.format(loss))
+
             loss.backward()
             optimizer.step()
+        if (epoch + 1) % 10 == 0:
+            print('Epoch:', '%04d' % (epoch + 1), 'cost =', '{:.6f}'.format(loss))
+    params = skip_gram_model.parameters()
+    params = [p.clone().detach() for p in params]
+    word_vec = {}
+    for index,word in enumerate(vocab):
+        word_vec[word] = params[0][:,index]
+    print(word_vec)
