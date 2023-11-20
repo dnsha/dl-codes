@@ -98,4 +98,4 @@ if __name__ == "__main__":
         print("loss after {} is {}".format(epoch,total_loss))
 
     for word in vocab:
-        print(model.embed(word_dict[word]))
+        print(word,model.embed(torch.tensor(word_dict[word]).detach()))
